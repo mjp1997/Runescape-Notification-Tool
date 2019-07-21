@@ -1,9 +1,10 @@
-#import necessary libraries/modules
+# import necessary libraries/modules
 from bs4 import BeautifulSoup
 import requests
 import csv
 
-#get requests from the osrs website
+# hello
+# get requests from the osrs website
 source = requests.get("http://oldschool.runescape.com").text
 soup = BeautifulSoup(source, "lxml")
 
