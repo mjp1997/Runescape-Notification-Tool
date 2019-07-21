@@ -8,7 +8,7 @@ import csv
 source = requests.get("http://oldschool.runescape.com").text
 soup = BeautifulSoup(source, "lxml")
 
-# csv_file = open("cms_scrape.csv", "w")
+osrsOutput = open("osrsOutput.txt", "w")
 # csv_writer = csv.writer(csv_file)
 # csv_writer.writerow(["headline", "summary", "video_link"])
 
@@ -16,9 +16,11 @@ soup = BeautifulSoup(source, "lxml")
 for article in soup.find_all("article"):
 
     headline = article.h3.a.text
+    osrsOutput.write(headline + "\n")
     print(headline)
 
     summary = article.find("div", class_="news-article__details").p.text
+    osrsOutput.write(summary + "\n")
     print(summary)
 
     updateLink = article.find("div", class_="news-article__details").p.a
@@ -27,6 +29,7 @@ for article in soup.find_all("article"):
     print(type(updateLink))
     newHalfLink = updateLink[hrefStart:-1]
     secondHalfLink = newHalfLink.split('"')[0]
+    osrsOutput.write(secondHalfLink + "\n")
     print(secondHalfLink)
 
     print()

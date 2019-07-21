@@ -1,43 +1,42 @@
-# #import necessary libraries
+# import necessary libraries
 import datetime
 import smtplib, ssl
 import getpass
 from email.message import EmailMessage
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
-with open(osrsOutput) as tfile:
-    message = EmailMessage()
-    message.set_content(tfile.read())
+# open/read textfile generated from the scraper
+with open("osrsOutput.txt", "r") as fileOutput:
+    osrsOutput = MIMEText(fileOutput.read())
+    fileOutput.close()
 
-message["Subject"] = "The contects of %s" % cms_scrape.csv
-message["From"] = "mjp970501@gmail.com"
-messge["To"] = "perez15@live.missouristate.edu"
+# specify e-mail content/information fields
+senderEmail = "mjp970501@gmail.com"
+sendTo = "perez15@live.missouristate.edu"
+sentMsg = """Update alert, hope it's a good one :) """
+osrsOutput["Subject"] = "Old School Runescape Update Notifier: "
+osrsOutput["From"] = senderEmail
+osrsOutput["To"] = sendTo
 
 # #retrieve current timestamp
 # myDate = datetime.datetime.now()
 # formatDate = myDate.strftime('%m-%d-%y %H:%M')
 # print(formatDate)
 
-# # msg = MIMEMultipart()
-# # msg['Subject'] = 'Runescape Update Tracker'
+# server info
 port = 465  # For SSL
+smtp_server_name = "smtp.gmail.com"
+server = smtplib.SMTP_SSL(smtp_server_name, port)
 
-# retrieve recipient's e-mail and sender's pass
-senderEmail = "mjp970501@gmail.com"
-sendTo = "perez15@live.missouristate.edu"
-Template = """Update alert, hope it's a good one :) """
-# print(userMessage)
+
 password = input("Please type your e-mail's password: ")
 
-# # # Create a secure SSL contex
-context = ssl.create_default_context()
-
-server = smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
+# error handling
+server.login(senderEmail, password)
 try:
-
-    server.send_message(message)
-#      # TODO: Send email
+    server.send_message(osrsOutput)
 except:
     print("Error, e-mail could not be sent. Please check the e-mail/pass you entered.")
 
